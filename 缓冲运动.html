@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            background: red;
+            margin: 10px;
+            left: 100px;
+        }
+
+        #div2{
+            width: 1px;
+            height:300px;
+            background-color: black;
+            position: absolute;
+            left:600px;
+        }
+    </style>
+    <script>
+        /*缓冲运动*/
+        var timer = null;
+        var speed = 0;
+        function UnUniformModition(iTarget) {
+            var oDiv = document.getElementsByTagName("div")[0];
+            clearInterval(timer);
+            timer = setInterval(function () {
+                if (parseInt(getStyle(oDiv, "left")) == iTarget) {
+                    clearInterval(timer);
+                } else {
+                    speed = (iTarget - parseInt(getStyle(oDiv, "left"))) / 10;
+                    speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+                    oDiv.style.left = parseInt(getStyle(oDiv, "left")) + speed + "px";
+                }
+            }, 30);
+        }
+
+
+        /* 用来获取样式的值 obj-对象，name-样式名*/
+        function getStyle(obj, name) {
+            if (obj.currentStyle) {
+                return obj.currentStyle[name];
+            } else {
+                return getComputedStyle(obj, false)[name];
+            }
+        }
+        window.onload = function () {
+            var btn = document.getElementsByTagName("input")[0];
+            btn.onclick = function () {
+                UnUniformModition(600);
+            }
+
+        }
+
+    </script>
+
+</head>
+<body>
+<input type="button" value="缓冲运动">
+
+<div></div>
+<div id="div2"></div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>任意值运动框架version 1.0</title>
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+            background: green;
+            margin: 10px;
+        }
+
+        #div2 {
+            border: 1px solid black;
+        }
+        #div3{
+            -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+            filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+            opacity: 0.3;
+        }
+    </style>
+    <script>
+
+
+        /**
+         *
+         * @param obj 操作对象
+         * @param attr  属性名
+         * @param iTarget  目标值
+         */
+        var timer = null;
+        function startMove(obj, attr, iTarget) {
+            clearInterval(timer);
+            timer = setInterval(function () {
+                var cur = 0;
+                if (attr == 'opacity') { //单独处理透明度问题，因为只有透明度一定要小数
+                    cur = parseFloat(getStyle(obj, attr)) * 100;//乘以100是让透明度的0~1之间的度数扩大，方便后面的使用
+                } else {
+                    cur = parseInt(getStyle(obj, attr));
+                }
+                var speed = (iTarget - cur) / 6; //让速度与当前位置离ITarget的距离成正比。除数越大那么缓冲就越大
+                //如果attr的值是0~1之间的话，下面这句代码将不可用，如果是0~100之间的话，那么就没问题
+                speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+                if (cur == iTarget) {
+                    clearInterval(timer);
+                } else {
+                    if (attr == 'opacity') {
+                        obj.style.filter = 'alpha(opacity:' + (cur + speed) + ')';
+                        obj.style.opacity = (cur + speed) / 100;//把范围重新缩小为0~1之间
+                    } else {
+                        obj.style[attr] = cur + speed + 'px';
+                    }
+                }
+            }, 30);
+        }
+
+
+        /**
+         * 获取样式属性的值。代替offset。
+         * @param obj   操作对象
+         * @param name  属性名
+         * @returns {*}
+         */
+        function getStyle(obj, name) {
+            if (obj.currentStyle) {
+                return obj.currentStyle[name];
+            } else {
+                return getComputedStyle(obj, false)[name];
+            }
+        }
+
+        /**
+         * 测试：
+         * 下面的例子只能一个一个进行测试，因为在这里没有设置多对象动作，
+         *  也就是说定时器此时是共有的，如果同时使用这个定时器，会出错。
+         */
+        window.onload = function () {
+            //测试width的变化（未设置border等其他影响width的属性）
+            var oDiv1 = document.getElementById("div1");
+            oDiv1.onmouseover = function () {
+                startMove(this, "width", 500);
+            }
+            oDiv1.onmouseout = function () {
+                startMove(this, "width", 100);
+            }
+            //测试width的变化（设置了影响width值得元素）
+            /*
+            var oDiv2 = document.getElementById("div2");
+            oDiv2.onmouseover = function () {
+                startMove(this, "width", 500);
+            }
+            oDiv2.onmouseout = function () {
+                startMove(this, "width", 100);
+            }
+            */
+
+            //测试width的变化（设置了影响width值得元素）
+            /*
+            var oDiv3 = document.getElementById("div3");
+            oDiv3.onmouseover = function () {
+                startMove(this, "opacity", 100);
+            }
+            oDiv3.onmouseout = function () {
+                startMove(this, "opacity", 30);
+            }
+            */
+        }
+    </script>
+</head>
+<body>
+<div id="div1"></div>
+<div id="div2"></div>
+<div id="div3"></div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #div1 {
+            width: 100px;
+            height: 100px;
+            background: red;
+            -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+            filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+            opacity: 0.3;
+        }
+    </style>
+    <script>
+        window.onload = function () {
+            var oDiv = document.getElementById("div1");
+            var timer;
+            var opt = 30; //初始值
+
+            function changeColor(iTarget) {
+                var speed = 0;
+                if (opt > iTarget) {
+                    speed = -10;
+                } else {
+                    speed = 10;
+                }
+                clearInterval(timer); //先关闭上一次的定时器
+                timer = setInterval(function () {   //开启本次的定时器
+                    if (opt == iTarget) {
+                        clearInterval(timer);   //如果达到目的，就关闭定时器
+                    } else {
+                        opt += speed;
+                        oDiv.style.opacity = opt / 100;
+                        oDiv.style.filter = 'alpha(opacity:' + opt + ')';
+                    }
+                }, 30);
+            }
+
+
+            oDiv.onmousemove = function () {
+                changeColor(100);
+            }
+            oDiv.onmouseout = function () {
+                changeColor(30);
+            }
+        }
+
+
+    </script>
+</head>
+<body>
+<div id="div1"></div>
+</body>
+</html>
