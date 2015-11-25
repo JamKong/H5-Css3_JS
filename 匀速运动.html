@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #div1 {
+            width: 100px;
+            height: 100px;
+            background: red;
+            margin: 10px;
+            position:absolute;
+        }
+    </style>
+    <script>
+        var timer = null; //定时器
+        var speed = 10; //运动速度
+        function uniformMotion(obj,iTarget) {
+            if (obj.offsetLeft > iTarget) { //判断当前left属性的值与最终目标的值之间的位置
+                speed = -10;                //说明当前对象的位置在目标值的右边
+            } else {
+                speed = 10;
+            }
+            clearInterval(timer);                   //先关闭之前的定时器
+            timer = setInterval(function () {       //开启定时器，并保存返回的定时器对象
+                if (obj.offsetLeft == iTarget) {
+                    clearInterval(timer);           //运动到目标后关闭定时器
+                } else if (Math.abs(obj.offsetLeft - iTarget) < Math.abs(speed)) {
+                    obj.style.left = iTarget + 'px'; //如果当前位置与目标的位置不足10，那么就让它直接跳到目标位置上
+                    clearInterval(timer);            //关闭定时器
+                } else {
+                    obj.style.left = obj.offsetLeft + speed + 'px'; //让当前位置向目标位置移动
+                }
+            }, 30);
+        }
+        window.onload = function () {
+            var btn = document.getElementsByTagName("input")[0];
+            var oDiv = document.getElementById("div1");
+            btn.onclick = function(){
+                uniformMotion(oDiv,300);
+            }
+        }
+    </script>
+</head>
+<body>
+<input type="button" value="匀速运动"/>
+<div id="div1"></div>
+</body>
+</html>

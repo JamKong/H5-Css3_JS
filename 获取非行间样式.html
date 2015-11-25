@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #div1{
+            width:200px;
+            height:100px;
+            background: green;
+            border: 1px solid black;   /*用来测试是否会影响到 getStyle()方法*/
+            margin:10px;    /*用来测试是否会影响到 getStyle()方法*/
+        }
+    </style>
+    <script>
+        window.onload =function(){
+            var oDiv = document.getElementById("div1");
+            oDiv.style.width = 120 + 'px';
+            alert(getStyle(oDiv,"width"));
+            //alert(parseInt(getStyle(oDiv,"width")));
+        }
+
+
+        function getStyle(obj,name){
+            if(obj.currentStyle){
+                return obj.currentStyle[name];
+            }else{
+                /*getComputedStyle(obj.false)[name];*/
+                return getComputedStyle(obj,false)[name];
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="div1" style="width:100px;"></div>
+</body>
+</html>

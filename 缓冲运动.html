@@ -26,21 +26,18 @@
         /*缓冲运动*/
         var timer = null;
         var speed = 0;
-        function UnUniformModition(iTarget) {
-            var oDiv = document.getElementsByTagName("div")[0];
+        function UnUniformModition(obj,iTarget) {
             clearInterval(timer);
             timer = setInterval(function () {
-                if (parseInt(getStyle(oDiv, "left")) == iTarget) {
+                if (parseInt(getStyle(obj, "left")) == iTarget) {
                     clearInterval(timer);
                 } else {
-                    speed = (iTarget - parseInt(getStyle(oDiv, "left"))) / 10;
+                    speed = (iTarget - parseInt(getStyle(obj, "left"))) / 10;
                     speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
-                    oDiv.style.left = parseInt(getStyle(oDiv, "left")) + speed + "px";
+                    obj.style.left = parseInt(getStyle(obj, "left")) + speed + "px";
                 }
             }, 30);
         }
-
-
         /* 用来获取样式的值 obj-对象，name-样式名*/
         function getStyle(obj, name) {
             if (obj.currentStyle) {
@@ -51,18 +48,15 @@
         }
         window.onload = function () {
             var btn = document.getElementsByTagName("input")[0];
+            var oDiv = document.getElementsByTagName("div")[0];
             btn.onclick = function () {
-                UnUniformModition(600);
+                UnUniformModition(oDiv,600);
             }
-
         }
-
     </script>
-
 </head>
 <body>
 <input type="button" value="缓冲运动">
-
 <div></div>
 <div id="div2"></div>
 </body>

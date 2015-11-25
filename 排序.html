@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<script>
+    window.onload = function () {
+        var oBtn = document.getElementsByTagName("input")[0];
+        var tabObject = document.getElementsByTagName('table')[0];
+        oBtn.onclick = function () {
+            //把tbody下的所有tr保存到一个数组中
+            var trArr = [];
+            for (var i = 0; i < tabObject.tBodies[0].rows.length; i++) {
+                trArr[i] = tabObject.tBodies[0].rows[i];
+            }
+            trArr.sort(function (tr1, tr2) {
+                var n1 = parseInt(tr1.cells[0].innerHTML);
+                var n2 = parseInt(tr2.cells[0].innerHTML);
+                return n1 - n2;
+            });
+            for (var i = 0; i < trArr.length; i++) {
+                tabObject.tBodies[0].appendChild(trArr[i]);
+            }
+        }
+    };
+</script>
+<style>
+
+
+</style>
+<body>
+<input type="button" value="排序">
+<table>
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>3</td>
+        <td>zs</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>zs</td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>zs</td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>zs</td>
+    </tr>
+    <tr>
+        <td>7</td>
+        <td>zs</td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td>zs</td>
+    </tr>
+    </tbody>
+
+</table>
+</body>
+</html>
